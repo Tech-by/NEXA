@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - NEXA</title>
+    <link rel="icon" type="image/png" href="/c:\Users\olale\Pictures\nexa.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7e9af9;
+            --secondary-color: #f8a5c2;
+            --accent-color: #6ce5c1;
+            --warning-color: #ff9a8b;
+            --purple-color: #c8a2f0;
+            --background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --text-primary: #4a4a6a;
+            --text-secondary: #7a7a9a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .auth-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+        }
+
+        .auth-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .auth-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(126, 154, 249, 0.1);
+        }
+
+        .auth-btn {
+            background: linear-gradient(135deg, var(--primary-color), #9bb6ff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(126, 154, 249, 0.3);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(126, 154, 249, 0.4);
+        }
+
+        .auth-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .auth-link {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .auth-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        /* Custom Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.active {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .notification-message {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Notification -->
+    <div class="notification" id="notification">
+        <button class="notification-close" id="closeNotification">&times;</button>
+        <div class="notification-title" id="notificationTitle"></div>
+        <div class="notification-message" id="notificationMessage"></div>
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo">
+                <i class="fas fa-chart-network"></i>
+                <span>NEXA</span>
+            </div>
+            
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Sign in to your NEXA Financial account</p>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label class="input-label">Email Address</label>
+                    <input type="email" class="input-field" id="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Password</label>
+                    <input type="password" class="input-field" id="password" placeholder="Enter your password" required>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="#" id="forgotPassword">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="auth-btn" id="loginBtn">
+                    <span id="btnText">Sign In</span>
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                </button>
+            </form>
+
+            <div class="auth-link">
+                Don't have an account? <a href="signup.html">Sign Up</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>NEXA Financial &copy; 2025. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-analytics.js";
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBvuov5ovvsYIyFm5OFZb5y4QNSIno1eSY",
+            authDomain: "naija-transact.firebaseapp.com",
+            projectId: "naija-transact",
+            storageBucket: "naija-transact.firebasestorage.app",
+            messagingSenderId: "61963491863",
+            appId: "1:61963491863:web:b2c3bc5327973323985a52",
+            measurementId: "G-GTCPZ5WPNJ"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Notification system
+        function showNotification(title, message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const notificationTitle = document.getElementById('notificationTitle');
+            const notificationMessage = document.getElementById('notificationMessage');
+            
+            notification.className = `notification ${type}`;
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            notification.classList.add('active');
+            
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 5000);
+        }
+        
+        document.getElementById('closeNotification').addEventListener('click', () => {
+            document.getElementById('notification').classList.remove('active');
+        });
+
+        // Form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const btnText = document.getElementById('btnText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            // Show loading state
+            loginBtn.disabled = true;
+            btnText.style.display = 'none';
+            loadingSpinner.style.display = 'block';
+
+            try {
+                // Sign in user with Firebase Authentication
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Get user data from Firestore
+                try {
+                    const userDoc = await getDoc(doc(db, 'users', user.uid));
+                    let userData;
+                    
+                    if (userDoc.exists()) {
+                        userData = userDoc.data();
+                    } else {
+                        // Create default user data if document doesn't exist
+                        userData = {
+                            uid: user.uid,
+                            email: user.email,
+                            fullName: user.email.split('@')[0],
+                            displayName: user.email.split('@')[0],
+                            balance: 0,
+                            createdAt: new Date().toISOString()
+                        };
+                    }
+                    
+                    localStorage.setItem('nexaUser', JSON.stringify(userData));
+                } catch (error) {
+                    console.error("Error getting user document:", error);
+                    // Create default user data if Firestore fails
+                    const userData = {
+                        uid: user.uid,
+                        email: user.email,
+                        fullName: user.email.split('@')[0],
+                        displayName: user.email.split('@')[0],
+                        balance: 0,
+                        createdAt: new Date().toISOString()
+                    };
+                    localStorage.setItem('nexaUser', JSON.stringify(userData));
+                }
+
+                // Initialize user data if not exists
+                if (!localStorage.getItem('nexaBalance')) {
+                    localStorage.setItem('nexaBalance', '0.00');
+                }
+                if (!localStorage.getItem('nexaCodes')) {
+                    localStorage.setItem('nexaCodes', JSON.stringify([]));
+                }
+                if (!localStorage.getItem('nexaHeldCodes')) {
+                    localStorage.setItem('nexaHeldCodes', JSON.stringify([]));
+                }
+
+                showNotification('Welcome Back', 'Successfully signed in to your account!', 'success');
+                
+                // Redirect to home page after success
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1500);
+
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                let errorMessage = 'An error occurred during sign in. Please try again.';
+                
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage = 'Please enter a valid email address.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'This account has been disabled. Please contact support.';
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = 'No account found with this email. Please sign up first.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'Incorrect password. Please try again.';
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = 'Network error. Please check your internet connection.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Too many failed attempts. Please try again later.';
+                        break;
+                }
+                
+                showNotification('Sign In Failed', errorMessage, 'error');
+                
+                // Reset loading state
+                loginBtn.disabled = false;
+                btnText.style.display = 'block';
+                loadingSpinner.style.display = 'none';
+            }
+        });
+
+        // Forgot password functionality
+        document.getElementById('forgotPassword').addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            
+            if (!email) {
+                showNotification('Email Required', 'Please enter your email address to reset your password.', 'error');
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showNotification('Password Reset Email Sent', 'Check your email for instructions to reset your password.', 'success');
+            } catch (error) {
+                console.error('Password reset error:', error);
+                
+                let errorMessage = 'Failed to send password reset email. Please try again.';
+                
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage = 'Please enter a valid email address.';
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = 'No account found with this email address.';
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = 'Network error. Please check your internet connection.';
+                        break;
+                }
+                
+                showNotification('Error', errorMessage, 'error');
+            }
+        });
+    </script>
+</body>
+</html>
