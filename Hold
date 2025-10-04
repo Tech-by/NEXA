@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hold Units - NEXA</title>
+    <link rel="icon" type="image/png" href="/c:\Users\olale\Pictures\nexa.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7e9af9;
+            --secondary-color: #f8a5c2;
+            --accent-color: #6ce5c1;
+            --warning-color: #ff9a8b;
+            --purple-color: #c8a2f0;
+            --background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --text-primary: #4a4a6a;
+            --text-secondary: #7a7a9a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .back-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .input-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            font-family: monospace;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(126, 154, 249, 0.1);
+        }
+
+        .hold-btn {
+            background: linear-gradient(135deg, #ffd166, #ffe5a5);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(255, 209, 102, 0.3);
+            width: 100%;
+        }
+
+        .hold-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 209, 102, 0.4);
+        }
+
+        .hold-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .codes-section {
+            margin-bottom: 30px;
+        }
+
+        .codes-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .codes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .code-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .code-card.held {
+            border-color: var(--accent-color);
+            background: rgba(108, 229, 193, 0.1);
+        }
+
+        .code-card.completed {
+            border-color: var(--purple-color);
+            background: rgba(200, 162, 240, 0.1);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .code-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-family: monospace;
+        }
+
+        .code-status {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .status-available {
+            background: rgba(126, 154, 249, 0.1);
+            color: var(--primary-color);
+        }
+
+        .status-holding {
+            background: rgba(108, 229, 193, 0.1);
+            color: var(--accent-color);
+        }
+
+        .status-completed {
+            background: rgba(200, 162, 240, 0.1);
+            color: var(--purple-color);
+        }
+
+        .code-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+
+        .detail-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .progress-section {
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(135deg, var(--accent-color), #8df7d8);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .action-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .withdraw-btn {
+            background: linear-gradient(135deg, var(--purple-color), #d8b9ff);
+            color: white;
+        }
+
+        .withdraw-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(200, 162, 240, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Custom Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.active {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .notification-message {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Notification -->
+    <div class="notification" id="notification">
+        <button class="notification-close" id="closeNotification">&times;</button>
+        <div class="notification-title" id="notificationTitle"></div>
+        <div class="notification-message" id="notificationMessage"></div>
+    </div>
+
+    <header>
+        <a href="home.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="logo">
+            <i class="fas fa-chart-network"></i>
+            <span>NEXA</span>
+        </div>
+        <div style="width: 50px;"></div> <!-- Spacer for alignment -->
+    </header>
+
+    <main>
+        <h1 class="page-title">Hold Units</h1>
+        <p class="page-subtitle">Hold your codes to increase their value by 66.67%</p>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label class="input-label">Enter Code to Hold</label>
+                <input type="text" class="code-input" id="codeInput" placeholder="Paste your code here (e.g., ABCD-1234-EFGH-5678)">
+            </div>
+            <button class="hold-btn" id="holdBtn">Start Holding</button>
+        </div>
+
+        <div class="codes-section">
+            <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 20px; color: var(--text-primary);">Your Held Codes</h2>
+            <div class="codes-grid" id="codesGrid">
+                <!-- Codes will be dynamically inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>NEXA Financial &copy; 2025. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Notification system
+        function showNotification(title, message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const notificationTitle = document.getElementById('notificationTitle');
+            const notificationMessage = document.getElementById('notificationMessage');
+            
+            notification.className = `notification ${type}`;
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            notification.classList.add('active');
+            
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 5000);
+        }
+        
+        document.getElementById('closeNotification').addEventListener('click', () => {
+            document.getElementById('notification').classList.remove('active');
+        });
+
+        // Initialize if not exists
+        if (!localStorage.getItem('nexaCodes')) {
+            localStorage.setItem('nexaCodes', JSON.stringify([]));
+        }
+        
+        if (!localStorage.getItem('nexaHeldCodes')) {
+            localStorage.setItem('nexaHeldCodes', JSON.stringify([]));
+        }
+        
+        const codeInput = document.getElementById('codeInput');
+        const holdBtn = document.getElementById('holdBtn');
+        const codesGrid = document.getElementById('codesGrid');
+        
+        // Get duration based on amount
+        function getDuration(amount) {
+            if (amount >= 1500 && amount <= 2000) return 7; // 7 days
+            if (amount >= 2500 && amount <= 5000) return 14; // 14 days
+            if (amount >= 5500 && amount <= 10000) return 20; // 20 days
+            if (amount >= 15000) return 35; // 35 days
+            return 7; // Default
+        }
+        
+        // Calculate target value (66.67% increase)
+        function calculateTargetValue(initialValue) {
+            return Math.round(initialValue * 1.6667);
+        }
+        
+        // Start holding a code
+        holdBtn.addEventListener('click', () => {
+            const code = codeInput.value.trim().toUpperCase();
+            
+            if (!code) {
+                showNotification('Code Required', 'Please enter a code to hold', 'error');
+                return;
+            }
+            
+            const codes = JSON.parse(localStorage.getItem('nexaCodes'));
+            const heldCodes = JSON.parse(localStorage.getItem('nexaHeldCodes'));
+            
+            // Check if code exists
+            const codeIndex = codes.findIndex(c => c.code === code && !c.used);
+            
+            if (codeIndex === -1) {
+                showNotification('Invalid Code', 'This code does not exist or has already been used', 'error');
+                return;
+            }
+            
+            const codeData = codes[codeIndex];
+            
+            // Check if code is already being held
+            const isAlreadyHeld = heldCodes.some(held => held.code === code);
+            
+            if (isAlreadyHeld) {
+                showNotification('Already Held', 'This code is already being held', 'error');
+                return;
+            }
+            
+            // Calculate duration and target value
+            const duration = getDuration(codeData.amount);
+            const targetValue = calculateTargetValue(codeData.amount);
+            
+            // Add to held codes
+            heldCodes.push({
+                code: code,
+                initialValue: codeData.amount,
+                targetValue: targetValue,
+                startTime: new Date().toISOString(),
+                duration: duration, // in days
+                status: 'holding'
+            });
+            
+            localStorage.setItem('nexaHeldCodes', JSON.stringify(heldCodes));
+            
+            // Mark original code as used
+            codes[codeIndex].used = true;
+            localStorage.setItem('nexaCodes', JSON.stringify(codes));
+            
+            showNotification('Holding Started', `Code ${code} is now being held. Value will increase from ₦${codeData.amount.toLocaleString()} to ₦${targetValue.toLocaleString()} over ${duration} days.`, 'success');
+            
+            // Clear input
+            codeInput.value = '';
+            
+            // Reload codes
+            loadHeldCodes();
+        });
+        
+        // Load and display held codes
+        function loadHeldCodes() {
+            const heldCodes = JSON.parse(localStorage.getItem('nexaHeldCodes'));
+            
+            codesGrid.innerHTML = '';
+            
+            if (heldCodes.length === 0) {
+                codesGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
+                        <i class="fas fa-pause-circle" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 15px;"></i>
+                        <h3 style="color: var(--text-secondary); margin-bottom: 10px;">No Codes Being Held</h3>
+                        <p style="color: var(--text-secondary);">Enter a code above to start holding and increasing its value.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            heldCodes.forEach((heldData, index) => {
+                const now = new Date().getTime();
+                const startTime = new Date(heldData.startTime).getTime();
+                const elapsed = now - startTime;
+                const totalDuration = heldData.duration * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+                
+                const progress = Math.min(elapsed / totalDuration, 1);
+                const currentValue = heldData.initialValue + (heldData.targetValue - heldData.initialValue) * progress;
+                
+                let status = 'Holding';
+                let statusClass = 'status-holding';
+                let cardClass = 'held';
+                let buttonHtml = '';
+                
+                if (progress >= 1) {
+                    status = 'Completed';
+                    statusClass = 'status-completed';
+                    cardClass = 'completed';
+                    buttonHtml = `
+                        <button class="action-btn withdraw-btn" data-index="${index}">
+                            Generate Withdrawal Code
+                        </button>
+                    `;
+                } else {
+                    buttonHtml = `
+                        <button class="action-btn" disabled style="background: var(--text-secondary); color: white;">
+                            Holding in Progress...
+                        </button>
+                    `;
+                }
+                
+                const codeCard = document.createElement('div');
+                codeCard.className = `code-card ${cardClass}`;
+                codeCard.innerHTML = `
+                    <div class="code-header">
+                        <div class="code-value">${heldData.code}</div>
+                        <div class="code-status ${statusClass}">${status}</div>
+                    </div>
+                    <div class="code-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Initial Value</div>
+                            <div class="detail-value">₦${heldData.initialValue.toLocaleString()}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Current Value</div>
+                            <div class="detail-value">₦${Math.round(currentValue).toLocaleString()}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Target Value</div>
+                            <div class="detail-value">₦${heldData.targetValue.toLocaleString()}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Duration</div>
+                            <div class="detail-value">${heldData.duration} days</div>
+                        </div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress * 100}%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>${Math.round(progress * 100)}% Complete</span>
+                            <span>${progress < 1 ? Math.ceil((1 - progress) * heldData.duration) + ' days remaining' : 'Completed!'}</span>
+                        </div>
+                    </div>
+                    ${buttonHtml}
+                `;
+                
+                codesGrid.appendChild(codeCard);
+            });
+            
+            // Add event listeners to withdraw buttons
+            document.querySelectorAll('.withdraw-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    generateWithdrawalCode(index);
+                });
+            });
+        }
+        
+        // Generate withdrawal code after holding is complete
+        function generateWithdrawalCode(index) {
+            const heldCodes = JSON.parse(localStorage.getItem('nexaHeldCodes'));
+            const codes = JSON.parse(localStorage.getItem('nexaCodes'));
+            
+            const heldData = heldCodes[index];
+            
+            // Generate new code with increased value
+            const newCode = generateComplexCode();
+            
+            // Add new code to available codes
+            codes.push({
+                code: newCode,
+                amount: heldData.targetValue,
+                currentValue: heldData.targetValue,
+                used: false,
+                type: 'withdrawal',
+                timestamp: new Date().toISOString(),
+                fromHolding: true,
+                originalCode: heldData.code
+            });
+            
+            localStorage.setItem('nexaCodes', JSON.stringify(codes));
+            
+            // Remove from held codes
+            heldCodes.splice(index, 1);
+            localStorage.setItem('nexaHeldCodes', JSON.stringify(heldCodes));
+            
+            showNotification('Withdrawal Code Generated', `New code ${newCode} with value ₦${heldData.targetValue.toLocaleString()} has been created. You can now sell this code.`, 'success');
+            
+            // Reload held codes
+            loadHeldCodes();
+        }
+        
+        // Generate complex unique code
+        function generateComplexCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const segments = [];
+            
+            // Generate 4 segments of 4 characters each
+            for (let i = 0; i < 4; i++) {
+                let segment = '';
+                for (let j = 0; j < 4; j++) {
+                    segment += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                segments.push(segment);
+            }
+            
+            return segments.join('-');
+        }
+        
+        // Initial load
+        loadHeldCodes();
+        
+        // Update progress every minute
+        setInterval(loadHeldCodes, 60000);
+    </script>
+</body>
+</html>
