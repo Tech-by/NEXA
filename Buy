@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Units - NEXA</title>
+    <link rel="icon" type="image/png" href="/c:\Users\olale\Pictures\nexa.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7e9af9;
+            --secondary-color: #f8a5c2;
+            --accent-color: #6ce5c1;
+            --warning-color: #ff9a8b;
+            --purple-color: #c8a2f0;
+            --background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --text-primary: #4a4a6a;
+            --text-secondary: #7a7a9a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .back-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .amounts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .amounts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .amount-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 25px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .amount-card:hover, .amount-card.active {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .amount-card.active {
+            background: rgba(126, 154, 249, 0.1);
+        }
+
+        .amount-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            background: linear-gradient(135deg, var(--primary-color), #9bb6ff);
+        }
+
+        .amount-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .amount-desc {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        .generate-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, var(--primary-color), #9bb6ff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(126, 154, 249, 0.3);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(126, 154, 249, 0.4);
+        }
+
+        .generate-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .code-display {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(126, 154, 249, 0.1);
+            border-radius: 12px;
+            border: 1px dashed var(--primary-color);
+            display: none;
+        }
+
+        .code-display.active {
+            display: block;
+        }
+
+        .code-title {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .code-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-family: monospace;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Custom Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.active {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .notification-message {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Notification -->
+    <div class="notification" id="notification">
+        <button class="notification-close" id="closeNotification">&times;</button>
+        <div class="notification-title" id="notificationTitle"></div>
+        <div class="notification-message" id="notificationMessage"></div>
+    </div>
+
+    <header>
+        <a href="home.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="logo">
+            <i class="fas fa-chart-network"></i>
+            <span>NEXA</span>
+        </div>
+        <div style="width: 50px;"></div> <!-- Spacer for alignment -->
+    </header>
+
+    <main>
+        <h1 class="page-title">Buy Units</h1>
+        <p class="page-subtitle">Select an amount to generate a purchase code</p>
+
+        <div class="amounts-grid">
+            <div class="amount-card" data-amount="1500">
+                <div class="amount-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="amount-value">₦1,500</div>
+                <div class="amount-desc">Starter Package</div>
+            </div>
+
+            <div class="amount-card" data-amount="3000">
+                <div class="amount-icon">
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="amount-value">₦3,000</div>
+                <div class="amount-desc">Basic Package</div>
+            </div>
+
+            <div class="amount-card" data-amount="5000">
+                <div class="amount-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="amount-value">₦5,000</div>
+                <div class="amount-desc">Standard Package</div>
+            </div>
+
+            <div class="amount-card" data-amount="7000">
+                <div class="amount-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="amount-value">₦7,000</div>
+                <div class="amount-desc">Premium Package</div>
+            </div>
+
+            <div class="amount-card" data-amount="10000">
+                <div class="amount-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="amount-value">₦10,000</div>
+                <div class="amount-desc">Gold Package</div>
+            </div>
+
+            <div class="amount-card" data-amount="15000">
+                <div class="amount-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <div class="amount-value">₦15,000</div>
+                <div class="amount-desc">Platinum Package</div>
+            </div>
+        </div>
+
+        <div class="generate-section">
+            <button class="generate-btn" id="generateBtn" disabled>Generate Code</button>
+            
+            <div class="code-display" id="codeDisplay">
+                <div class="code-title">Your Purchase Code:</div>
+                <div class="code-value" id="codeValue"></div>
+                <div class="code-title">Code Value: ₦<span id="codeAmount">0</span></div>
+                <button class="copy-btn" id="copyBtn">Copy Code</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>NEXA Financial &copy; 2025. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Notification system
+        function showNotification(title, message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const notificationTitle = document.getElementById('notificationTitle');
+            const notificationMessage = document.getElementById('notificationMessage');
+            
+            notification.className = `notification ${type}`;
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            notification.classList.add('active');
+            
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 5000);
+        }
+        
+        document.getElementById('closeNotification').addEventListener('click', () => {
+            document.getElementById('notification').classList.remove('active');
+        });
+
+        // Initialize if not exists
+        if (!localStorage.getItem('nexaBalance')) {
+            localStorage.setItem('nexaBalance', '0.00');
+        }
+        
+        if (!localStorage.getItem('nexaCodes')) {
+            localStorage.setItem('nexaCodes', JSON.stringify([]));
+        }
+        
+        if (!localStorage.getItem('nexaHeldCodes')) {
+            localStorage.setItem('nexaHeldCodes', JSON.stringify([]));
+        }
+        
+        let selectedAmount = 0;
+        const amountCards = document.querySelectorAll('.amount-card');
+        const generateBtn = document.getElementById('generateBtn');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const codeValue = document.getElementById('codeValue');
+        const codeAmount = document.getElementById('codeAmount');
+        const copyBtn = document.getElementById('copyBtn');
+        
+        // Amount selection
+        amountCards.forEach(card => {
+            card.addEventListener('click', () => {
+                amountCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedAmount = parseInt(card.getAttribute('data-amount'));
+                generateBtn.disabled = false;
+            });
+        });
+        
+        // Generate code
+        generateBtn.addEventListener('click', () => {
+            if (selectedAmount === 0) return;
+            
+            const currentBalance = parseFloat(localStorage.getItem('nexaBalance'));
+            
+            if (currentBalance < selectedAmount) {
+                showNotification('Insufficient Balance', `You need ₦${selectedAmount.toLocaleString()} but only have ₦${currentBalance.toLocaleString()}`, 'error');
+                return;
+            }
+            
+            // Generate complex unique code
+            const code = generateComplexCode();
+            
+            // Update balance
+            const newBalance = currentBalance - selectedAmount;
+            localStorage.setItem('nexaBalance', newBalance.toFixed(2));
+            
+            // Save code to storage
+            const codes = JSON.parse(localStorage.getItem('nexaCodes'));
+            codes.push({
+                code: code,
+                amount: selectedAmount,
+                currentValue: selectedAmount, // Start with original value
+                targetValue: Math.round(selectedAmount * 1.6667), // 66.67% increase
+                used: false,
+                type: 'purchase',
+                timestamp: new Date().toISOString(),
+                isHeld: false
+            });
+            localStorage.setItem('nexaCodes', JSON.stringify(codes));
+            
+            // Display code
+            codeValue.textContent = code;
+            codeAmount.textContent = selectedAmount.toLocaleString();
+            codeDisplay.classList.add('active');
+            
+            showNotification('Code Generated', `Purchase code generated successfully! ₦${selectedAmount.toLocaleString()} has been deducted from your balance.`, 'success');
+        });
+        
+        // Copy code
+        copyBtn.addEventListener('click', () => {
+            const code = codeValue.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy Code';
+                }, 2000);
+            });
+        });
+        
+        // Generate complex unique code
+        function generateComplexCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const segments = [];
+            
+            // Generate 4 segments of 4 characters each
+            for (let i = 0; i < 4; i++) {
+                let segment = '';
+                for (let j = 0; j < 4; j++) {
+                    segment += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                segments.push(segment);
+            }
+            
+            return segments.join('-');
+        }
+    </script>
+</body>
+</html>
