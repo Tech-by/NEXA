@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawals - NEXA</title>
+    <link rel="icon" type="image/png" href="/c:\Users\olale\Pictures\nexa.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7e9af9;
+            --secondary-color: #f8a5c2;
+            --accent-color: #6ce5c1;
+            --warning-color: #ff9a8b;
+            --purple-color: #c8a2f0;
+            --background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --text-primary: #4a4a6a;
+            --text-secondary: #7a7a9a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .back-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .withdraw-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .balance-display {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(126, 154, 249, 0.1);
+            border-radius: 12px;
+            border: 1px dashed var(--primary-color);
+        }
+
+        .balance-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .balance-amount {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .amount-input, .account-input, .bank-select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .amount-input:focus, .account-input:focus, .bank-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(126, 154, 249, 0.1);
+        }
+
+        .withdraw-btn {
+            background: linear-gradient(135deg, var(--warning-color), #ffaca1);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(255, 154, 139, 0.3);
+            width: 100%;
+        }
+
+        .withdraw-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 154, 139, 0.4);
+        }
+
+        .withdraw-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .processing-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: rgba(108, 229, 193, 0.1);
+            border-radius: 12px;
+            border: 1px dashed var(--accent-color);
+            margin-top: 20px;
+        }
+
+        .processing-section.active {
+            display: block;
+        }
+
+        .processing-text {
+            font-size: 0.875rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Custom Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.active {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .notification-message {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Notification -->
+    <div class="notification" id="notification">
+        <button class="notification-close" id="closeNotification">&times;</button>
+        <div class="notification-title" id="notificationTitle"></div>
+        <div class="notification-message" id="notificationMessage"></div>
+    </div>
+
+    <header>
+        <a href="home.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="logo">
+            <i class="fas fa-chart-network"></i>
+            <span>NEXA</span>
+        </div>
+        <div style="width: 50px;"></div> <!-- Spacer for alignment -->
+    </header>
+
+    <main>
+        <h1 class="page-title">Withdraw Funds</h1>
+        <p class="page-subtitle">Withdraw your funds to your bank account</p>
+
+        <div class="withdraw-section">
+            <div class="balance-display">
+                <div class="balance-label">Available Balance</div>
+                <div class="balance-amount">₦ <span id="balanceAmount">0.00</span></div>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Withdrawal Amount (₦)</label>
+                <input type="number" class="amount-input" id="amountInput" placeholder="Enter amount to withdraw" min="1000">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Bank Account Number</label>
+                <input type="text" class="account-input" id="accountInput" placeholder="Enter your account number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Bank Name</label>
+                <select class="bank-select" id="bankSelect">
+                    <option value="">Select your bank</option>
+                    <!-- All Nigerian banks will be loaded here -->
+                </select>
+            </div>
+            
+            <button class="withdraw-btn" id="withdrawBtn">Withdraw Funds</button>
+
+            <div class="processing-section" id="processingSection">
+                <div class="processing-text">Processing your withdrawal request...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>NEXA Financial &copy; 2025. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Complete list of all Nigerian banks including fintech and digital banks
+        const allNigerianBanks = [
+            // Traditional Banks
+            { code: "044", name: "Access Bank" },
+            { code: "063", name: "Access Bank (Diamond)" },
+            { code: "035A", name: "ALAT by WEMA" },
+            { code: "401", name: "ASO Savings and Loans" },
+            { code: "023", name: "Citibank Nigeria" },
+            { code: "050", name: "Ecobank Nigeria" },
+            { code: "562", name: "Ekondo Microfinance Bank" },
+            { code: "070", name: "Fidelity Bank" },
+            { code: "011", name: "First Bank of Nigeria" },
+            { code: "214", name: "First City Monument Bank" },
+            { code: "058", name: "Guaranty Trust Bank" },
+            { code: "030", name: "Heritage Bank" },
+            { code: "301", name: "Jaiz Bank" },
+            { code: "082", name: "Keystone Bank" },
+            { code: "526", name: "Parallex Bank" },
+            { code: "076", name: "Polaris Bank" },
+            { code: "101", name: "Providus Bank" },
+            { code: "221", name: "Stanbic IBTC Bank" },
+            { code: "068", name: "Standard Chartered Bank" },
+            { code: "232", name: "Sterling Bank" },
+            { code: "100", name: "Suntrust Bank" },
+            { code: "032", name: "Union Bank of Nigeria" },
+            { code: "033", name: "United Bank For Africa" },
+            { code: "215", name: "Unity Bank" },
+            { code: "035", name: "Wema Bank" },
+            { code: "057", name: "Zenith Bank" },
+            
+            // Fintech & Digital Banks
+            { code: "000", name: "Kuda Bank" },
+            { code: "000", name: "OPay" },
+            { code: "000", name: "Palmpay" },
+            { code: "000", name: "Moniepoint" },
+            { code: "000", name: "FairMoney" },
+            { code: "000", name: "Carbon" },
+            { code: "000", name: "Branch" },
+            { code: "000", name: "Paga" },
+            { code: "000", name: "Remita" },
+            { code: "000", name: "Flutterwave" },
+            { code: "000", name: "Paystack" },
+            { code: "000", name: "Interswitch" },
+            { code: "000", name: "Chipper Cash" },
+            { code: "000", name: "Sendwave" },
+            { code: "000", name: "WorldRemit" },
+            { code: "000", name: "Wave" },
+            
+            // Microfinance Banks
+            { code: "000", name: "AB Microfinance Bank" },
+            { code: "000", name: "Addosser Microfinance Bank" },
+            { code: "000", name: "Finca Microfinance Bank" },
+            { code: "000", name: "LAPO Microfinance Bank" },
+            { code: "000", name: "Accion Microfinance Bank" },
+            { code: "000", name: "Baobab Microfinance Bank" },
+            { code: "000", name: "Fortis Microfinance Bank" },
+            { code: "000", name: "Fullrange Microfinance Bank" },
+            { code: "000", name: "Hasal Microfinance Bank" },
+            { code: "000", name: "Mutual Trust Microfinance Bank" },
+            { code: "000", name: "NPF Microfinance Bank" },
+            { code: "000", name: "Seed Capital Microfinance Bank" },
+            { code: "000", name: "Sparkle Microfinance Bank" },
+            { code: "000", name: "VFD Microfinance Bank" },
+            
+            // Mortgage Banks
+            { code: "000", name: "AG Mortgage Bank" },
+            { code: "000", name: "Brent Mortgage Bank" },
+            { code: "000", name: "First Generation Mortgage Bank" },
+            { code: "000", name: "Gateway Mortgage Bank" },
+            { code: "000", name: "Jubilee Life Mortgage Bank" },
+            { code: "000", name: "Lagos Building Investment Company" },
+            { code: "000", name: "Mayfresh Mortgage Bank" },
+            { code: "000", name: "Omoluabi Mortgage Bank" },
+            { code: "000", name: "Refuge Mortgage Bank" },
+            { code: "000", name: "SafeTrust Mortgage Bank" },
+            
+            // Other Financial Institutions
+            { code: "000", name: "Coronation Merchant Bank" },
+            { code: "000", name: "FBNQuest Merchant Bank" },
+            { code: "000", name: "FSDH Merchant Bank" },
+            { code: "000", name: "Globus Bank" },
+            { code: "000", name: "TajBank" },
+            { code: "000", name: "Suntrust Bank Nigeria" },
+            { code: "000", name: "Providus Bank" },
+            { code: "000", name: "PremiumTrust Bank" },
+            { code: "000", name: "Parallex Bank" },
+            { code: "000", name: "HopePSB" },
+            { code: "000", name: "MoneyMaster PSB" },
+            { code: "000", name: "9PSB" },
+            { code: "000", name: "LOTUS BANK" }
+        ];
+
+        // Notification system
+        function showNotification(title, message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const notificationTitle = document.getElementById('notificationTitle');
+            const notificationMessage = document.getElementById('notificationMessage');
+            
+            notification.className = `notification ${type}`;
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            notification.classList.add('active');
+            
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 5000);
+        }
+        
+        document.getElementById('closeNotification').addEventListener('click', () => {
+            document.getElementById('notification').classList.remove('active');
+        });
+
+        // Initialize if not exists
+        if (!localStorage.getItem('nexaBalance')) {
+            localStorage.setItem('nexaBalance', '0.00');
+        }
+        
+        if (!localStorage.getItem('nexaWithdrawals')) {
+            localStorage.setItem('nexaWithdrawals', JSON.stringify([]));
+        }
+        
+        // Populate banks dropdown
+        const bankSelect = document.getElementById('bankSelect');
+        allNigerianBanks.forEach(bank => {
+            const option = document.createElement('option');
+            option.value = bank.code;
+            option.textContent = bank.name;
+            bankSelect.appendChild(option);
+        });
+        
+        // Update balance display
+        document.getElementById('balanceAmount').textContent = localStorage.getItem('nexaBalance');
+        
+        const amountInput = document.getElementById('amountInput');
+        const accountInput = document.getElementById('accountInput');
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        const processingSection = document.getElementById('processingSection');
+        
+        // Enable/disable withdraw button based on input
+        function updateWithdrawButton() {
+            const amount = parseFloat(amountInput.value) || 0;
+            const account = accountInput.value.trim();
+            const bank = bankSelect.value;
+            const balance = parseFloat(localStorage.getItem('nexaBalance'));
+            
+            withdrawBtn.disabled = !(amount >= 1000 && account.length === 10 && bank && amount <= balance);
+        }
+        
+        amountInput.addEventListener('input', updateWithdrawButton);
+        accountInput.addEventListener('input', updateWithdrawButton);
+        bankSelect.addEventListener('change', updateWithdrawButton);
+        
+        // Withdraw funds
+        withdrawBtn.addEventListener('click', () => {
+            const amount = parseFloat(amountInput.value);
+            const account = accountInput.value.trim();
+            const bank = bankSelect.options[bankSelect.selectedIndex].text;
+            const balance = parseFloat(localStorage.getItem('nexaBalance'));
+            
+            if (amount < 1000) {
+                showNotification('Minimum Amount', 'Minimum withdrawal amount is ₦1,000', 'error');
+                return;
+            }
+            
+            if (amount > balance) {
+                showNotification('Insufficient Balance', 'Insufficient balance for this withdrawal', 'error');
+                return;
+            }
+            
+            if (account.length !== 10) {
+                showNotification('Invalid Account', 'Please enter a valid 10-digit account number', 'error');
+                return;
+            }
+            
+            // Show processing
+            processingSection.classList.add('active');
+            withdrawBtn.disabled = true;
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                // Process withdrawal
+                const newBalance = balance - amount;
+                localStorage.setItem('nexaBalance', newBalance.toFixed(2));
+                
+                // Generate unique withdrawal ID
+                const withdrawalId = 'WD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+                
+                // Save withdrawal record
+                const withdrawals = JSON.parse(localStorage.getItem('nexaWithdrawals'));
+                const withdrawalData = {
+                    id: withdrawalId,
+                    type: 'withdrawal',
+                    amount: amount,
+                    account: account,
+                    bank: bank,
+                    bankCode: bankSelect.value,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending',
+                    userId: 'user-' + Date.now(),
+                    processed: false
+                };
+                
+                withdrawals.push(withdrawalData);
+                localStorage.setItem('nexaWithdrawals', JSON.stringify(withdrawals));
+                
+                // Send real-time notification to admin
+                sendAdminNotification(withdrawalData);
+                
+                // Show success message
+                showNotification('Withdrawal Request Submitted', 
+                    `₦${amount.toLocaleString()} withdrawal request sent for processing. You will receive your funds within 24 hours.`, 
+                    'success');
+                
+                // Reset form
+                amountInput.value = '';
+                accountInput.value = '';
+                bankSelect.value = '';
+                processingSection.classList.remove('active');
+                document.getElementById('balanceAmount').textContent = newBalance.toFixed(2);
+                updateWithdrawButton();
+                
+            }, 2000);
+        });
+
+        // Send real-time notification to admin
+        function sendAdminNotification(withdrawalData) {
+            // Create admin notifications if not exists
+            if (!localStorage.getItem('nexaAdminNotifications')) {
+                localStorage.setItem('nexaAdminNotifications', JSON.stringify([]));
+            }
+            
+            const notifications = JSON.parse(localStorage.getItem('nexaAdminNotifications'));
+            
+            // Add new withdrawal notification
+            notifications.push({
+                id: 'NOTIF-' + Date.now(),
+                type: 'new_withdrawal',
+                title: 'New Withdrawal Request',
+                message: `₦${withdrawalData.amount.toLocaleString()} withdrawal request from account ${withdrawalData.account} (${withdrawalData.bank})`,
+                data: withdrawalData,
+                timestamp: new Date().toISOString(),
+                read: false
+            });
+            
+            localStorage.setItem('nexaAdminNotifications', JSON.stringify(notifications));
+            
+            // Also update the withdrawals list for admin
+            if (!localStorage.getItem('nexaPendingWithdrawals')) {
+                localStorage.setItem('nexaPendingWithdrawals', JSON.stringify([]));
+            }
+            
+            const pendingWithdrawals = JSON.parse(localStorage.getItem('nexaPendingWithdrawals'));
+            pendingWithdrawals.push(withdrawalData);
+            localStorage.setItem('nexaPendingWithdrawals', JSON.stringify(pendingWithdrawals));
+            
+            console.log('Admin notification sent:', withdrawalData);
+        }
+
+        // Initialize button state
+        updateWithdrawButton();
+    </script>
+</body>
+</html>
