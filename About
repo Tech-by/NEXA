@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - NEXA </title>
+    <link rel="icon" type="image/png" href="/c:\Users\olale\Pictures\nexa.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7e9af9;
+            --secondary-color: #f8a5c2;
+            --accent-color: #6ce5c1;
+            --warning-color: #ff9a8b;
+            --purple-color: #c8a2f0;
+            --background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --text-primary: #4a4a6a;
+            --text-secondary: #7a7a9a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .back-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .about-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            font-size: 1.25rem;
+        }
+
+        .about-content {
+            margin-bottom: 30px;
+        }
+
+        .about-text {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        @media (min-width: 768px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 25px;
+            transition: var(--transition);
+            border: 1px solid var(--glass-border);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .code-generation {
+            background: rgba(126, 154, 249, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 1px dashed var(--primary-color);
+        }
+
+        .code-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .code-example {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin: 15px 0;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .team-section {
+            margin-top: 40px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .team-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .team-card {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid var(--glass-border);
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, var(--primary-color), #9bb6ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .team-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .team-role {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .team-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .values-section {
+            margin-top: 40px;
+        }
+
+        .values-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .values-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .values-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 40px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-item i {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="home.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="logo">
+            <i class="fas fa-chart-network"></i>
+            <span>NEXA</span>
+        </div>
+        <div style="width: 50px;"></div> <!-- Spacer for alignment -->
+    </header>
+
+    <main>
+        <h1 class="page-title">About NEXA Financial</h1>
+        <p class="page-subtitle">Revolutionizing Digital Finance Through Advanced Code Generation Technology</p>
+
+        <div class="about-section">
+            <div class="about-content">
+                <h2 class="section-title">
+                    <i class="fas fa-rocket"></i> Our Innovative Approach
+                </h2>
+                <p class="about-text">
+                    At NEXA Financial, we've pioneered a groundbreaking approach to digital finance that leverages complex computer algorithms to generate unique, secure codes that serve as digital assets. Our proprietary system creates mathematically sophisticated codes that increase in value over time, providing our users with innovative income generation opportunities.
+                </p>
+                
+                <div class="code-generation">
+                    <h3 class="code-title">Advanced Code Generation Technology</h3>
+                    <p class="about-text">
+                        Our system utilizes sophisticated algorithms to create unique alphanumeric codes with embedded value. Each code undergoes multiple layers of encryption and validation to ensure security and authenticity.
+                    </p>
+                    <div class="code-example">
+                        // Example of our code generation algorithm<br>
+                        function generateNEXACode() {<br>
+                        &nbsp;&nbsp;const segments = [];<br>
+                        &nbsp;&nbsp;for (let i = 0; i < 4; i++) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;let segment = '';<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;for (let j = 0; j < 4; j++) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segment += chars.charAt(Math.floor(Math.random() * chars.length));<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;segments.push(segment);<br>
+                        &nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;return segments.join('-'); // Format: XXXX-XXXX-XXXX-XXXX<br>
+                        }
+                    </div>
+                    <p class="about-text">
+                        These codes aren't just random strings - they're carefully engineered digital assets with built-in appreciation mechanisms that allow them to grow in value systematically over predetermined timeframes.
+                    </p>
+                </div>
+
+                <h2 class="section-title" style="margin-top: 30px;">
+                    <i class="fas fa-chart-line"></i> How Our System Works
+                </h2>
+                <p class="about-text">
+                    Our platform operates on three fundamental principles that make income generation through code-based assets both accessible and profitable:
+                </p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, var(--primary-color), #9bb6ff);">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3 class="feature-title">Code Acquisition</h3>
+                        <p class="feature-desc">
+                            Users purchase uniquely generated codes at their base value. Each code is created using our proprietary algorithm and represents a digital asset with growth potential.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #ffd166, #ffe5a5);">
+                            <i class="fas fa-pause-circle"></i>
+                        </div>
+                        <h3 class="feature-title">Value Appreciation</h3>
+                        <p class="feature-desc">
+                            Through our holding mechanism, codes systematically increase in value by 66.67% over predetermined timeframes based on their initial value tier.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, var(--accent-color), #8df7d8);">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <h3 class="feature-title">Profit Realization</h3>
+                        <p class="feature-desc">
+                            Once codes reach their target value, users can generate new codes at the appreciated value and redeem them for immediate financial returns.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, var(--purple-color), #d8b9ff);">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3 class="feature-title">Community Growth</h3>
+                        <p class="feature-desc">
+                            Our referral system allows users to earn additional income by expanding the NEXA community while maintaining system sustainability.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="values-section">
+                <h2 class="section-title">
+                    <i class="fas fa-gem"></i> Our Core Values
+                </h2>
+                <ul class="values-list">
+                    <li><strong>Transparency:</strong> We believe in complete openness about how our code generation and value appreciation systems work.</li>
+                    <li><strong>Innovation:</strong> Constantly refining our algorithms to provide cutting-edge financial technology solutions.</li>
+                    <li><strong>Security:</strong> Implementing multiple layers of protection to safeguard user assets and transactions.</li>
+                    <li><strong>Accessibility:</strong> Making advanced financial technology available to everyone, regardless of technical expertise.</li>
+                    <li><strong>Sustainability:</strong> Designing systems that create long-term value for our community members.</li>
+                    <li><strong>Empowerment:</strong> Providing tools that enable financial growth and independence through technology.</li>
+                </ul>
+            </div>
+
+            <div class="team-section">
+                <h2 class="section-title">
+                    <i class="fas fa-users"></i> Our Visionary Team
+                </h2>
+                <p class="about-text">
+                    NEXA Financial was founded by a team of financial technology experts, software engineers, and blockchain specialists with decades of combined experience in digital finance and algorithmic trading systems.
+                </p>
+                
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="team-name">Algorithm Development Team</h3>
+                        <p class="team-role">Software Engineers & Mathematicians</p>
+                        <p class="team-desc">Specialists in cryptographic algorithms and financial modeling who designed our proprietary code generation system.</p>
+                    </div>
+                    
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="team-name">Security Division</h3>
+                        <p class="team-role">Cybersecurity Experts</p>
+                        <p class="team-desc">Dedicated to ensuring the integrity and safety of our platform and user assets through advanced security protocols.</p>
+                    </div>
+                    
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <h3 class="team-name">Financial Strategy Team</h3>
+                        <p class="team-role">Financial Analysts & Economists</p>
+                        <p class="team-desc">Experts in financial markets who design sustainable growth models and ensure system stability.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; text-align: center;">
+                <h2 class="section-title">
+                    <i class="fas fa-lock"></i> Secure & Regulated
+                </h2>
+                <p class="about-text">
+                    Our platform operates with the highest standards of security and compliance. All financial transactions are processed through licensed payment providers, and our code generation system is regularly audited to ensure fairness and transparency.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>NEXA Financial &copy; 2025. All rights reserved.</p>
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>asnekbusiness@gmail.com</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>+234 802 631 9729</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Nigeria</span>
+            </div>
+        </div>
+        <p style="margin-top: 15px; font-size: 0.8rem; color: var(--text-secondary);">
+            NEXA Financial - Revolutionizing Digital Assets Through Advanced Code Generation Technology
+        </p>
+    </footer>
+</body>
+</html>
