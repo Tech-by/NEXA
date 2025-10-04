@@ -441,11 +441,16 @@
         if (!localStorage.getItem('nexaBalance')) {
             localStorage.setItem('nexaBalance', '0.00');
         }
-        
         if (!localStorage.getItem('nexaWithdrawals')) {
             localStorage.setItem('nexaWithdrawals', JSON.stringify([]));
         }
-        
+        if (!localStorage.getItem('nexaPendingWithdrawals')) {
+            localStorage.setItem('nexaPendingWithdrawals', JSON.stringify([]));
+        }
+        if (!localStorage.getItem('nexaAdminNotifications')) {
+            localStorage.setItem('nexaAdminNotifications', JSON.stringify([]));
+        }
+
         // Populate banks dropdown
         const bankSelect = document.getElementById('bankSelect');
         allNigerianBanks.forEach(bank => {
@@ -454,64 +459,62 @@
             option.textContent = bank.name;
             bankSelect.appendChild(option);
         });
-        
+
         // Update balance display
         document.getElementById('balanceAmount').textContent = localStorage.getItem('nexaBalance');
-        
+
         const amountInput = document.getElementById('amountInput');
         const accountInput = document.getElementById('accountInput');
         const withdrawBtn = document.getElementById('withdrawBtn');
         const processingSection = document.getElementById('processingSection');
-        
+
         // Enable/disable withdraw button based on input
         function updateWithdrawButton() {
             const amount = parseFloat(amountInput.value) || 0;
             const account = accountInput.value.trim();
             const bank = bankSelect.value;
             const balance = parseFloat(localStorage.getItem('nexaBalance'));
-            
             withdrawBtn.disabled = !(amount >= 1000 && account.length === 10 && bank && amount <= balance);
         }
-        
+
         amountInput.addEventListener('input', updateWithdrawButton);
         accountInput.addEventListener('input', updateWithdrawButton);
         bankSelect.addEventListener('change', updateWithdrawButton);
-        
+
         // Withdraw funds
         withdrawBtn.addEventListener('click', () => {
             const amount = parseFloat(amountInput.value);
             const account = accountInput.value.trim();
             const bank = bankSelect.options[bankSelect.selectedIndex].text;
+            const bankCode = bankSelect.value;
             const balance = parseFloat(localStorage.getItem('nexaBalance'));
-            
+
             if (amount < 1000) {
                 showNotification('Minimum Amount', 'Minimum withdrawal amount is ₦1,000', 'error');
                 return;
             }
-            
             if (amount > balance) {
                 showNotification('Insufficient Balance', 'Insufficient balance for this withdrawal', 'error');
                 return;
             }
-            
             if (account.length !== 10) {
                 showNotification('Invalid Account', 'Please enter a valid 10-digit account number', 'error');
                 return;
             }
-            
+
             // Show processing
             processingSection.classList.add('active');
             withdrawBtn.disabled = true;
-            
+
             // Simulate processing delay
             setTimeout(() => {
                 // Process withdrawal
                 const newBalance = balance - amount;
                 localStorage.setItem('nexaBalance', newBalance.toFixed(2));
-                
+
                 // Generate unique withdrawal ID
                 const withdrawalId = 'WD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
-                
+
                 // Save withdrawal record
                 const withdrawals = JSON.parse(localStorage.getItem('nexaWithdrawals'));
                 const withdrawalData = {
@@ -520,24 +523,24 @@
                     amount: amount,
                     account: account,
                     bank: bank,
-                    bankCode: bankSelect.value,
+                    bankCode: bankCode,
                     timestamp: new Date().toISOString(),
                     status: 'pending',
                     userId: 'user-' + Date.now(),
                     processed: false
                 };
-                
+
                 withdrawals.push(withdrawalData);
                 localStorage.setItem('nexaWithdrawals', JSON.stringify(withdrawals));
-                
+
                 // Send real-time notification to admin
                 sendAdminNotification(withdrawalData);
-                
+
                 // Show success message
                 showNotification('Withdrawal Request Submitted', 
                     `₦${amount.toLocaleString()} withdrawal request sent for processing. You will receive your funds within 24 hours.`, 
                     'success');
-                
+
                 // Reset form
                 amountInput.value = '';
                 accountInput.value = '';
@@ -545,7 +548,7 @@
                 processingSection.classList.remove('active');
                 document.getElementById('balanceAmount').textContent = newBalance.toFixed(2);
                 updateWithdrawButton();
-                
+
             }, 2000);
         });
 
@@ -555,9 +558,9 @@
             if (!localStorage.getItem('nexaAdminNotifications')) {
                 localStorage.setItem('nexaAdminNotifications', JSON.stringify([]));
             }
-            
+
             const notifications = JSON.parse(localStorage.getItem('nexaAdminNotifications'));
-            
+
             // Add new withdrawal notification
             notifications.push({
                 id: 'NOTIF-' + Date.now(),
@@ -568,19 +571,17 @@
                 timestamp: new Date().toISOString(),
                 read: false
             });
-            
+
             localStorage.setItem('nexaAdminNotifications', JSON.stringify(notifications));
-            
+
             // Also update the withdrawals list for admin
             if (!localStorage.getItem('nexaPendingWithdrawals')) {
                 localStorage.setItem('nexaPendingWithdrawals', JSON.stringify([]));
             }
-            
+
             const pendingWithdrawals = JSON.parse(localStorage.getItem('nexaPendingWithdrawals'));
             pendingWithdrawals.push(withdrawalData);
             localStorage.setItem('nexaPendingWithdrawals', JSON.stringify(pendingWithdrawals));
-            
-            console.log('Admin notification sent:', withdrawalData);
         }
 
         // Initialize button state
