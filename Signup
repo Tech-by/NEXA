@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sign Up - NEXA</title>
+<link rel="icon" type="image/png" href="/c:\Users\olale\Pictures\nexa.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7e9af9;
+            --secondary-color: #f8a5c2;
+            --accent-color: #6ce5c1;
+            --warning-color: #ff9a8b;
+            --purple-color: #c8a2f0;
+            --background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --text-primary: #4a4a6a;
+            --text-secondary: #7a7a9a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .auth-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+        }
+
+        .auth-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .auth-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(126, 154, 249, 0.1);
+        }
+
+        .auth-btn {
+            background: linear-gradient(135deg, var(--primary-color), #9bb6ff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(126, 154, 249, 0.3);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(126, 154, 249, 0.4);
+        }
+
+        .auth-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .auth-link {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .auth-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        .password-strength {
+            margin-top: 5px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .password-strength.weak {
+            color: var(--warning-color);
+        }
+
+        .password-strength.medium {
+            color: #ffa500;
+        }
+
+        .password-strength.strong {
+            color: var(--accent-color);
+        }
+
+        /* Custom Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.active {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .notification-message {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Notification -->
+    <div class="notification" id="notification">
+        <button class="notification-close" id="closeNotification">&times;</button>
+        <div class="notification-title" id="notificationTitle"></div>
+        <div class="notification-message" id="notificationMessage"></div>
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo">
+                <i class="fas fa-chart-network"></i>
+                <span>NEXA</span>
+            </div>
+            
+            <h1 class="auth-title">Create Account</h1>
+            <p class="auth-subtitle">Join NEXA Financial to start your investment journey</p>
+
+            <form id="signupForm">
+                <div class="input-group">
+                    <label class="input-label">Full Name</label>
+                    <input type="text" class="input-field" id="fullName" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Email Address</label>
+                    <input type="email" class="input-field" id="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Password</label>
+                    <input type="password" class="input-field" id="password" placeholder="Create a password" required minlength="6">
+                    <div class="password-strength" id="passwordStrength"></div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Confirm Password</label>
+                    <input type="password" class="input-field" id="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Referral Code (Optional)</label>
+                    <input type="text" class="input-field" id="referralCode" placeholder="Enter referral code if you have one">
+                </div>
+
+                <button type="submit" class="auth-btn" id="signupBtn">
+                    <span id="btnText">Create Account</span>
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                </button>
+            </form>
+
+            <div class="auth-link">
+                Already have an account? <a href="login.html">Sign In</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>NEXA Financial &copy; 2025. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-analytics.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, updateDoc, collection, query, where, getDocs, increment, arrayUnion } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBvuov5ovvsYIyFm5OFZb5y4QNSIno1eSY",
+            authDomain: "naija-transact.firebaseapp.com",
+            projectId: "naija-transact",
+            storageBucket: "naija-transact.firebasestorage.app",
+            messagingSenderId: "61963491863",
+            appId: "1:61963491863:web:b2c3bc5327973323985a52",
+            measurementId: "G-GTCPZ5WPNJ"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Notification system
+        function showNotification(title, message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const notificationTitle = document.getElementById('notificationTitle');
+            const notificationMessage = document.getElementById('notificationMessage');
+            
+            notification.className = `notification ${type}`;
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            notification.classList.add('active');
+            
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 5000);
+        }
+        
+        document.getElementById('closeNotification').addEventListener('click', () => {
+            document.getElementById('notification').classList.remove('active');
+        });
+
+        // Password strength checker
+        const passwordInput = document.getElementById('password');
+        const passwordStrength = document.getElementById('passwordStrength');
+
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = '';
+            let strengthClass = '';
+
+            if (password.length === 0) {
+                strength = '';
+            } else if (password.length < 6) {
+                strength = 'Weak - at least 6 characters required';
+                strengthClass = 'weak';
+            } else if (password.length < 8) {
+                strength = 'Medium';
+                strengthClass = 'medium';
+            } else {
+                // Check for complexity
+                const hasUpperCase = /[A-Z]/.test(password);
+                const hasLowerCase = /[a-z]/.test(password);
+                const hasNumbers = /\d/.test(password);
+                const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+                const complexityScore = [hasUpperCase, hasLowerCase, hasNumbers, hasSpecialChar].filter(Boolean).length;
+
+                if (complexityScore >= 3) {
+                    strength = 'Strong';
+                    strengthClass = 'strong';
+                } else if (complexityScore >= 2) {
+                    strength = 'Medium';
+                    strengthClass = 'medium';
+                } else {
+                    strength = 'Weak';
+                    strengthClass = 'weak';
+                }
+            }
+
+            passwordStrength.textContent = strength;
+            passwordStrength.className = `password-strength ${strengthClass}`;
+        });
+
+        // Generate referral code
+        function generateReferralCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < 8; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // Handle referral system
+        async function handleReferral(referralCode, newUserId) {
+            try {
+                // Find user with this referral code
+                const usersRef = collection(db, 'users');
+                const q = query(usersRef, where("referralCode", "==", referralCode));
+                const querySnapshot = await getDocs(q);
+                
+                if (!querySnapshot.empty) {
+                    const referrerDoc = querySnapshot.docs[0];
+                    const referrerId = referrerDoc.id;
+                    
+                    // Update referrer's data
+                    await updateDoc(doc(db, 'users', referrerId), {
+                        referralCount: increment(1),
+                        balance: increment(500), // Credit referrer with 500 Naira
+                        referrals: arrayUnion(newUserId)
+                    });
+                    
+                    // Update new user's data
+                    await updateDoc(doc(db, 'users', newUserId), {
+                        referredBy: referrerId,
+                        balance: increment(200) // New user gets 200 Naira bonus
+                    });
+                    
+                    showNotification('Referral Applied', 'Referral bonus credited to your account!', 'success');
+                } else {
+                    showNotification('Invalid Referral', 'The referral code you entered is invalid.', 'error');
+                }
+            } catch (error) {
+                console.error("Error handling referral:", error);
+                showNotification('Referral Error', 'There was an error processing your referral.', 'error');
+            }
+        }
+
+        // Form submission
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const referralCode = document.getElementById('referralCode').value;
+            const signupBtn = document.getElementById('signupBtn');
+            const btnText = document.getElementById('btnText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            // Validation
+            if (password !== confirmPassword) {
+                showNotification('Password Mismatch', 'Passwords do not match. Please try again.', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showNotification('Weak Password', 'Password must be at least 6 characters long.', 'error');
+                return;
+            }
+
+            // Show loading state
+            signupBtn.disabled = true;
+            btnText.style.display = 'none';
+            loadingSpinner.style.display = 'block';
+
+            try {
+                // Create user with Firebase Authentication
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Generate referral code for the new user
+                const userReferralCode = generateReferralCode();
+                
+                // Create user document in Firestore
+                const userData = {
+                    uid: user.uid,
+                    email: user.email,
+                    fullName: fullName,
+                    displayName: fullName,
+                    balance: 0,
+                    referralCode: userReferralCode,
+                    referredBy: referralCode || null,
+                    createdAt: new Date().toISOString()
+                };
+                
+                await setDoc(doc(db, 'users', user.uid), userData);
+                
+                // Handle referral if code was provided
+                if (referralCode) {
+                    await handleReferral(referralCode, user.uid);
+                }
+
+                // Store user data in localStorage
+                localStorage.setItem('nexaUser', JSON.stringify(userData));
+                
+                // Initialize user-specific data
+                if (!localStorage.getItem('nexaBalance')) {
+                    localStorage.setItem('nexaBalance', '0.00');
+                }
+                if (!localStorage.getItem('nexaCodes')) {
+                    localStorage.setItem('nexaCodes', JSON.stringify([]));
+                }
+                if (!localStorage.getItem('nexaHeldCodes')) {
+                    localStorage.setItem('nexaHeldCodes', JSON.stringify([]));
+                }
+
+                showNotification('Account Created', 'Welcome to NEXA Financial! Your account has been created successfully.', 'success');
+                
+                // Redirect to home page after success
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 2000);
+
+            } catch (error) {
+                console.error('Signup error:', error);
+                
+                let errorMessage = 'An error occurred during signup. Please try again.';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'This email is already registered. Please use a different email or sign in.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Please enter a valid email address.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Password is too weak. Please choose a stronger password.';
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = 'Network error. Please check your internet connection.';
+                        break;
+                }
+                
+                showNotification('Signup Failed', errorMessage, 'error');
+                
+                // Reset loading state
+                signupBtn.disabled = false;
+                btnText.style.display = 'block';
+                loadingSpinner.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
